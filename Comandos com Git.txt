@@ -22,6 +22,6 @@ git pull //baixa todos os arquivos da branch que está na nuvem para seu pc
 git merge <nome da branch> //Carrega todas os dados da branch mensionada para a qual vc estiver usando no momento.
 Ex: Se vc estiver na staging, e quer carrega-la para a master, vc deve mudar sua branch de uso para master e depois realizar o merge
 
-teste
+git checkout -b <nome da nova branch> <branch a ser copiada> //Cria uma cópia de uma branch e mudar para ela ao mesmo tempo
 
 
