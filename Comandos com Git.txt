@@ -17,6 +17,7 @@ git reset --hard <id da versão encontrada através do reflog> //Volta a versão
 
 git branch // verifica quais branch existem(galhos de códigos, no caso, master é código principal)
 git branch <nome> //Vc cria uma nova branch com qualquer outro nome, será uma paralela, como testes por exemplo)
+git branch -D <nome da branch> //deleta a branch(CUIDADO)
 git checkout <nome da branch>//Muda de branch. Ex: Da master para staging, agora, todas as atualizações serão aplicadas na 'staging'
 git pull //baixa todos os arquivos da branch que está na nuvem para seu pc
 git merge <nome da branch> //Carrega todas os dados da branch mensionada para a qual vc estiver usando no momento.
@@ -24,4 +25,5 @@ Ex: Se vc estiver na staging, e quer carrega-la para a master, vc deve mudar sua
 
 git checkout -b <nome da nova branch> <branch a ser copiada> //Cria uma cópia de uma branch e mudar para ela ao mesmo tempo
 
+touch.gitignore //criara um arquivo que deverá ser posto o caminho do arquivo a ser ignorado pelo git
 
