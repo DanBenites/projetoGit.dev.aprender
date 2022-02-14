@@ -1,3 +1,28 @@
 git init //Inicia um arquivo git
 git status //mostra o status de commits("Versões dos arquivos") da pasta
+git add "nome do arquivo"
+git add . //adicona todos os arquivos na pasta
+git commit -m "comentario" //boa pratica, para informar o que foi feito na versão
+
+git config --global user.email "email"
+git config --global user.name "SeuNome"
+
+git remote add origin <o url do github> //para add o repositório do seu github
+git push //atualizar o diretório no github com as modificações feitas na pasta
+
+git push --set-upstream origin master //Versão escolhida a fazer o update
+
+git reflog //Ver quais versões já foram add
+git reset --hard <id da versão encontrada através do reflog> //Volta a versão anterior o seu projeto
+
+git branch // verifica quais branch existem(galhos de códigos, no caso, master é código principal)
+git branch <nome> //Vc cria uma nova branch com qualquer outro nome, será uma paralela, como testes por exemplo)
+git branch -D <nome da branch> //deleta a branch(CUIDADO)
+git checkout <nome da branch>//Muda de branch. Ex: Da master para staging, agora, todas as atualizações serão aplicadas na 'staging'
+git pull //baixa todos os arquivos da branch que está na nuvem para seu pc
+git merge <nome da branch> //Carrega todas os dados da branch mensionada para a qual vc estiver usando no momento.
+Ex: Se vc estiver na staging, e quer carrega-la para a master, vc deve mudar sua branch de uso para master e depois realizar o merge
+
+git checkout -b <nome da nova branch> <branch a ser copiada> //Cria uma cópia de uma branch e mudar para ela ao mesmo tempo
+
 
