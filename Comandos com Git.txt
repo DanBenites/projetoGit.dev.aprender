@@ -25,4 +25,7 @@ Ex: Se vc estiver na staging, e quer carrega-la para a master, vc deve mudar sua
 
 git checkout -b <nome da nova branch> <branch a ser copiada> //Cria uma cópia de uma branch e mudar para ela ao mesmo tempo
 
+touch .gitignore //para criar um arquivo que o git ira ignorar
+echo <nome do arquvio> >> .gitignore //Para adcionar o arquivo que vc deseja que seja ignorado
+cat .gitignore //mostra o que esta sendo ignorado
 
