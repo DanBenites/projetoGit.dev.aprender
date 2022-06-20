@@ -1,0 +1,392 @@
+CREATE DATABASE 'nome do bd'; //cria um novo bd
+mysql -u root; //Acessar o mysql com usuário root(admin)
+
+-- Comentário de unica linha
+/* */ Comentário de multiplas linhas
+
+SHOW DATABASES; //Mostra todos os bd que tem criados
+USE 'nome do bd'; //Passa a usar esse bd para trabalhar com ele
+SOURCE 'arquivo.sql'; //Carrega todos os comandos SQL que estão no arquivo.sql
+
+SELECT * FROM 'nome da tabela'; //Seleciona todos os dados existentes dentro dessa tabela
+SELECT * FROM 'nome do bd'.'nome da tabela; //É possivel acessar uma tabela em um bd sem estar usando ela atráves deste comando
+CREATE TABLE 'nome da tabela' ('nome da coluna' VARCHAR(100), 'nome da coluna' CHAR(11), 'nome da coluna' MEDIUMTEXT); // Cria uma tabela com as seguintes colunas
+
+DROP TABLE 'nome da tabela'; //Deleta a tabela, junto com todos os dados que pertenciam a ela
+
+
+CREATE TABLE 'nome da tabela' ('nome da coluna' 'tipo de dado', 'nome da coluna' 'tipo de dado'('valor'), 'nome da coluna' 'tipo de dado');
+ex: CREATE TABLE users (id INT NOT NULL, nome VARCHAR(255), cpf CHAR(11));
+
+INSERT INTO 'nome da tabela' ('valor a ser add', 'valor a ser add', 'valor a ser add');
+ex: INSERT INTO users VALUES (1, "Daniel", "97598534405");
+
+UPDATE 'nome da tabela' SET 'nome da coluna' = 'novo valor' WHERE 'identificador' = 'valor';
+ex: UPDATE users SET nome = "Deniel" WHERE id = 1;
+
+DELETE FROM 'nome da tabela' WHERE 'elemento' = 'valor';
+-----------------------------
+
+AND - OR - NOT
+
+SELECT * FROM 'nome da tabela' WHERE 'nome da coluna' > 'valor' AND 'nome da coluna' > 'valor'; //AND mesma função de um '&&', ou seja, selecionara valores cuja as duas condições sejam verdadeiras
+SELECT * FROM 'nome da tabela' WHERE 'nome da coluna' = 'valor' OR 'nome da coluna' = 'valor'; // OR mesma função de um '||', ou seja, retorna qualquer uma das condições impostas.
+SELECT * FROM 'nome da tabela' WHERE NOT 'nome da coluna' = 'valor' AND NOT 'nome da coluna' = 'valor'; // NOT função de negação, retorna-rá todos os valores que não possui os atributos na condição de negação;
+
+-----------------------------
+
+ORDER BY - ordenar os valores de uma coluna, normalmente os valores já são ordenados por ordem ascendenete, DESC fará ordenação descedente.
+
+SELECT * FROM 'nome da tabela' ORDER BY 'nome da coluna' DESC; //Irá ordernar os valores dessa coluna em formato descedente
+SELECT * FROM 'nome da tabela' ORDER BY 'nome da coluna' ASC; //irá ordernar os valores usando como padrão essa coluna de forma ascedenete, apesar de ser redundante, já que por padrão, os valores são ordenados de forma ascedente
+
+-----------------------------
+
+LIMIT - Limitar os resultados e tornar a consulta mais rápida;
+
+SELECT * FROM 'nome da tabela' ORDER BY 'nome da coluna' DESC LIMIT 'valor'; // O limit irá retornar a quantidade de valores que for mencionado, se for 10, limitará a quantidade a 10 resulutados
+
+----------------------------
+
+MIN - retorna o menor valor de uma coluna especifica
+
+SELECT 'nome da tabela' FROM 'nome da coluna' ORDER BY 'salary' ASC LIMIT 1; //Retornaria o mesmo resultado que a função abaixo
+SELECT MIN(nome da tabela) FROM 'nome da coluna'; //Retorna o menor valor da coluna dentro da tabela
+
+
+MAX - retorna o maior valor de uma coluna especifica
+
+SELECT 'nome da tabela' AS 'nome a ser atribuido' FROM 'nome da coluna'; // Retorna o maior, em AS 'nome a ser atribuido', é o nome a ser atribuido no ato de visualizar a tabela, não muda de fato o nome da coluna e tabela
+
+----------------------------
+
+COUNT - Retorna o número de elementos que combinam com algum critério;
+
+SELECT COUNT(*) FROM 'nome da tabela' WHERE 'nome da coluna' > 'valor';
+SELECT COUNT(*) FROM AS 'nome a ser atribuido' FROM 'nome da tabela';
+
+----------------------------
+
+AVG - Retorna a média de uma determinada coluna;
+
+SELECT AVG(nome da tabela) AS 'nome a ser atribuido' FROM (nome da coluna) WHERE 'nome da tabela' > 'valor';
+
+SUM - Vai retornar a soma de todos os valores de uma coluna;
+
+SELECT SUM(salary) FROM salaries WHERE salary ORDER BY salary DESC LIMIT 5; //Não vai funcionar, pq ORDER BY e LIMIT são para visualizão e não filtros de dados, logo, ele retorna a soma dos valores de toda a coluna.
+SELECT SUM(salary) FROM salaries WHERE salary > 10000; //Aqui ele funciona, pois a clausula WHERE é um filtro de dados
+
+LIKE - filtra os resultados , utilizado sempre em conjunto do WHERE
+
+SELECT * FROM 'nome da tabela' WHERE 'nome da coluna' LIKE '%valor%'; //Retorna uma busca na coluna, onde os valor do começo, meio e fim tenham algo a ver com o que vc pedir para encontrar
+
+----------------------------
+
+IN - retorna uma busca por um conjunto de valores
+
+SELECT * FROM 'nome da tabela' WHERE 'nome da coluna' IN("valor", "valor", "valor"); //Obs: deve possui as aspas simples ou duplas
+
+BETWEEN - retorna todos os dados que eetsão dentro de uam faixa de valores
+neste caso em especifico, a clausula AND é usado para determinar esse intervalo
+
+SELECT * FROM 'nome da tabela' WHERE 'nome da coluna' BETWEEN 'valor inicial' AND 'valor final';
+
+-----------------------------
+
+ALIAS( AS )- renomear uma coluna com um nome não objetivo ou colunas originadas de função
+SELECT SUM(nome da tabela) AS 'nome a ser atribuido' FROM 'nome da coluna' WHERE 'nome da coluna' > 'valor';
+
+-----------------------------
+ --- CONSTRAINS ---
+
+NOT NULL - usado para impedri que um valor a ser inserido na coluna seja nulo, entranto, esse sistema a brechas
+EX: CREATE TABLE users (nome VARCHAR(100) NOT NULL
+			idade INT NOT NULL);
+    INSERT INTO users (nome) VALUES ("João"); //Veja que apesar de idade não poder ser nulo, ele irá funcionar e irá atribuir um valor 0 nesta inserção para a coluna idade
+    INSERT INTO users (nome, idade0 VALUES (NULL, 30); //Também vai funcionar, apesar de ser um valor nulo, pois está fornçando essa inserção
+    INSERT INTO users (nome, idade0 VALUES ("", 30); //funciona, pois a String vazia é diferente de nulo.
+Logo, percebemos que o NOT NULL não funciona exatamente para impedir de que dados nulos sejam inseridos, tal tratamento deve ser feito no Back-end ou Front-end
+
+UNIQUE - valores na coluna serão unicos, nunca serão repedidos
+
+PRIMARY KEY - Valores serão o identificador dos elementos relacionados a mesma linha de várias colunas, também será unico
+
+AUTO INCREMENT - Auto incrementa os valores em ordem crescente, muito usado no id
+
+ex: CREATE TABLE produtos ( id INT PRIMARY KEY AUTO_INCREMENT NOT NULL UNIQUE,
+			    nome VARCHAR(255),
+			    sku VARCHAR(10));
+    INSERT INTO produtos (nome, sku) VALUES ("Mamão", "123sdf");
+
+FOREIGN KEY - Identificador que fará refernecia a outro identificador de outra tabela, assimilando as duas, assim, podemos ter dados relacionais de uma tabela para outra
+ex: CREATE TABLE pessoas( id INT PRIMARY KAY AUTO_INCREMENT NOT NULL,
+			  nome VARCHAR(100) NOT NULL,
+			  idade INT);
+    CREATE TABLE enderecos (
+	id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+	rua VARCHAR(100),
+	numero VARCHAR(10),
+	pessoa_id INT NOT NULL,
+	FOREIGN KEY (pessoa_id) REFERENCES pessoas(id) ); /* Aqui estou referenciando pessoa_id da tabela endereços com id da tabela pessoas,
+ assim, se ambos tiverem os mesmo valores, significa que se trata da mesma pessoa
+OBS: Na inserção de um valor para a FOREIGN KEY, a chave já deve existir na tabela a qual ela vai ser refenciada, ou seja, não posso referenciar a pessoa de id 10 se ela ainda não existir
+OBS: Não é possivel deletar tabela pai sem antes deletar a tabela filho, logo, se deve remover primeiro a tabela 'enderecos' e depois 'pessoas' */
+
+INDEX - Serve para agilizar consultas em colunas de tabelas que estão sendo muito consultadas e a resposta mais rápida é nescessária.
+CREATE INDEX 'nome a ser atribuido' ON 'nome da tabela'('nome da coluna');
+DROP INDEX 'nome do index' ON 'nome da tabela'
+
+
+-----------------------------
+ --- JOINs ---
+
+INNER JOIN - Retorna as colunas que fazem relação entre as tabelas
+
+SELECT 'primeira tabela'.'coluna', 'primeira tabela'.'coluna', 'segunda tabela'.'coluna'
+FROM 'primeira tabela' INNER JOIN 'segunda tabela' ON 'primary key' = 'foreign key';
+
+Ex:     SELECT employees.first_name, employees.last_name, salaries.salary AS salario
+	FROM employees
+	INNER JOIN salaries
+	ON employees.emp_no = salaries.emp_no
+	WHERE salaries.salary >= 120000
+	ORDER BY  salaries.salary DESC;
+
+LEFT JOIN - Retornara todos os dados da tabela da esquerda e os necessários da direita, ou seja, pode ter dados nulos a direita
+
+RIGHT JOIN - Retornara todos os dados da tabela da direita e os necessários da esquerda, ou seja, pode ter dados nulos a esquerda
+
+Para fazer JOINs com mais de uma tabela, é só adicionar mais JOINs na seleção
+Ex:     SELECT employees.first_name, salaries.salary, titles.title
+	FROM employees
+	INNER JOIN salaries
+	ON employees.emp_no = salaries.emp_no
+	INNER JOIN titles
+	ON employees.emp_no = titles.emp_no;
+
+-----------------------------
+ --- AGRUPAMENTOS E SUBQUERIES ---
+
+UNION - Utilizado para combinar o resultado de duas ou mais seleções sem dados duplicados
+Obs: As colunas precisam ter o mesmo nome. Podemos selecionar mais de uma coluna por vez
+
+SELECT 'coluna' FROM 'tabela' UNION SELECT 'coluna' FROM 'tabela'; 
+
+UNION ALL - Utilizado para combinar o resultado de duas ou mais seleções, entretanto, pode trazer dados duplicados
+SELECT 'coluna' FROM 'tabela' UNION ALL SELECT 'coluna' FROM 'tabela';
+
+GROUP BY - serve para agruparmos colunas e checarmos quantidades de determinados elementos
+Ex: SELECT 'coluna', COUNT('mesma coluna') FROM 'tabela desta coluna' GROUP BY 'mesma coluna';
+
+HAVING - semelhante ao WHERE, porém, podemos utilizar com ele agregadores de função(SUM, AVG, GROUP BY), pois WHERE não pode ser utilizado nesses casos
+Ex: SELECT title AS "Cargos", COUNT(title) AS 'Qtd por cargo'
+    FROM titles
+    GROUP BY title
+    HAVING COUNT(title) > 100000;
+
+Subquery - é uma query dentro de outra query, sendo usado mais comumente dois SELECT's
+Apesar de se parecer muito com um JOIN, não é, já que, as vezes, precisamos de algo mais especifico, então, fazer uma subconsulta pode ser tornra mais pratico do que um JOIN.
+Ex: SELECT emp_no, first_name, (
+	SELECT SUM(salary) 
+    	FROM salaries
+    	WHERE employees.emp_no = salaries.emp_no
+) AS soma_salarios
+FROM employees;
+
+EXISTS - Serve para verificar se existe algum registro em alguma subquery, assim, podemos retornar resultados apenas se existir de fato algum dado relacionado ao solicitado
+Ex: SELECT emp_no, first_name, last_name, (
+	SELECT SUM(salary) 
+	FROM salaries
+	WHERE employees.emp_no = salaries.emp_no
+) AS soma_salarios
+FROM employees
+WHERE EXISTS (
+	SELECT salary
+	FROM salaries
+	WHERE employees.emp_no = salaries.emp_no
+	HAVING SUM(salary) > 2000000);
+
+ANY - Retorna resultados que recebem true na subquery, que, por meio desta, retorna apenas os resultados que condizem a uma condição
+Ex: SELECT first_name
+FROM employees
+WHERE emp_no = ANY (
+	SELECT emp_no
+    FROM salaries
+    WHERE salary > 150000);
+
+-----------------------------
+ --- FUNÇÕES PARA STRINGs ---
+
+CHAR_LENGTH - Retorna a quantidade de caracteres presentes em uma string
+SELECT '1º coluna', CHAR_LENGTH('1º coluna'), '2º coluna', CHAR_LENGTH('2º coluna') FROM 'tabela' WHERE CHAR_LENGTH('1º ou 2º coluna') > 'valor';
+
+CONCAT - concatena duas ou mais strings
+SELECT CONCAT (nome, "tem", idade, " anos de idade!") AS nome_e_idade FROM funcionarios;
+
+CONCAT_WS - concatena duas ou mais strings com um separador em comum
+SELECT CONCAT_WS(",", nome, idade) AS separado_por_virgula FROM funcionarios;
+
+FORMAT - vai formatar um número com um número de casas determinado por argumentos;
+SELECT customer_id, amount, FORMAT(amount, 1) FROM payment; //Neste caso, como o valor de amount é real(ex: 2.99), o FORMAT vai arredondar, pois é solitado apenas uma casa(valor absoluto, exibindo, 3.00 para antes 2.99)
+
+INSTR - Retorna a posição do caracter ou string que estamos buscando em uma outra string
+SELECT email, INSTR(email, "@") FROM users;
+
+LCASE - transforma todo o texto retornado em letras minusculas(lower case)
+SELECT first_name, last_name, LCASE(CONCAT(first_name, " ", last_name)) AS nome_completo FROM customer;
+
+UCASE - transforma todo o texto retornado em letras minusculas(lower case)
+SELECT UCASE(description) FROM film;
+
+LEFT - extrai uma quantidade de caracteres de uma string, a extração acontece da esquerda para a direita
+SELECT last_update, LEFT(last_update, 10) FROM actor; //Antes: 2022-06-14 17:56:33 , Depois: 2022-06-14
+
+RIGHT - extrai uma quantidade de caracteres de uma string, a extração acontece da direita para a esquerda
+SELECT last_update, RIGHT(last_update, 8) FROM actor; //Antes: 2022-06-14 17:56:33 , Depois: 17:56:33
+
+REPLACE - troca alguma partde de uma string por outra enviada por parâmetro
+Obs: essa mudança é apenas visual, não afeta o banco de dados.
+SELECT REPLACE (name, "Action", "Actions") AS 'name' FROM category; 
+
+SUBSTR - extrai uma string a partir de dois indices, posição para inicio e quantidade de caracteres após inicio.
+SELECT last_update, SUBSTR(last_update, 12, 5) FROM actor; //Antes: 2022-06-14 17:56:33 , Depois: 17:56
+
+-----------------------------
+ --- FUNÇÕES PARA NUMBERs ---
+
+CEIL - arredonda números com casa decimais para cima (25.8 > 26)
+SELECT 'coluna', CEIL('coluna') FROM 'tabela';
+
+FLOOR - arredonda números com casa decimais para baixo (25.8 > 25)
+SELECT 'coluna', FLOOR('coluna') FROM 'tabela';
+
+MAX - retorna o maior valor de uma coluna
+SELECT 'coluna', MAX('coluna') FROM 'tabela';
+
+MIN - retorna o menor valor de uma coluna
+SELECT 'coluna', MIN('coluna') FROM 'tabela';
+
+SUM - retorna a soma de todos os valores de uma coluna
+SELECT 'coluna', SUM('coluna') FROM 'tabela';
+
+-----------------------------
+ --- FUNÇÕES PARA DATEs ---
+
+ADDDATE - adiciona ou remove uma quantidade de horas, dias, meses ou anos a uma data
+Ex: SELECT last_update, ADDDATE(last_update, "5 DAYS"),
+ADDDATE(last_update, INTERVAL 2 MONTH),
+ADDDATE(last_update, INTERVAL -3 MONTH)
+FROM actor;
+
+DATEDIFF - calcula a diferença de duas datas, o valor retornado será em dias
+Ex: SELECT DATEDIFF(ADDDATE(last_update, "1 Days"), last_update) FROM actor;
+
+ADDTIME - Adiciona ou remove uma quantidade de tempo a uma data, podemos utilizar o formato: yyyy-mm-dd hh:mm:ss;
+Ex: SELECT *, ADDTIME(last_update, "5 03:00:00") FROM actor; //Adicona 5 dias e 3 horas ao tempo original
+
+DATE_FORMAT - formata uma data com um padrão indicado
+Ex: SELECT DATE_FORMAT(last_update, "%Y") AS ano,
+DATE_FORMAT(last_update, "%d/%m/%Y"), last_update 
+FROM actor;// Verificar a documentação para saber de mais fomratações
+
+DAY - Retorna o dia da data utilizada na função
+Ex: SELECT last_update, DAY(last_update) AS dia FROM actor;
+
+DAYOFWEEK - retorna o dia da semana de uma determinada data em numero, iniciando de domingo como 1;
+
+DAYOFYEAR - retorna em que dia do ano se encontra, os valores vão de 1 a 365 dias.
+
+WEEKOFYEAR - retorna a semana do ano de uma determinada data, o retorno é de 1 a 42
+
+MONTH - extrai o mês de uma data, retorno é de 1 a 12
+
+YEAR - retorna o ano de uma data, o retorno é valor do próprio ano
+
+-----------------------------
+ --- RELACIONAMENTO DE TABELAS ---
+
+ONE TO ONE - relacionamento um para um, teremos no maximo um registro ligado a outro, a estrutura é feita por duas tabelas ligadas por um FOREIGN KEY
+
+Ex:
+CREATE TABLE estudante (
+	id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    nome VARCHAR(100),
+    turma VARCHAR(5));
+    
+   CREATE TABLE contatos (
+	id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    telefone VARCHAR(20),
+    estudante_id INT NOT NULL,
+    FOREIGN KEY (estudante_id) REFERENCES estudante(id));
+    
+INSERT INTO estudante (nome, turma) VALUES ("Matheus", "304d");
+INSERT INTO estudante (nome, turma) VALUES ("João", "101a");
+
+INSERT INTO contatos (telefone, estudante_id) VALUES ("(48)9999-9999", 1);
+INSERT INTO contatos (telefone, estudante_id) VALUES ("(37)8888-8888", 2);
+
+SELECT estudante.*, contatos.*
+FROM estudante
+JOIN contatos 
+ON contatos.estudante_id = estudante.id;
+
+ONE TO MANY - um para muitos, uma tabela possui vários relacionamentos com outras tabelas, mas o inverso não ocorre.
+Ex: CREATE TABLE clientes (
+	id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    nome VARCHAR(100),
+    data_nascimento DATE);
+    
+CREATE TABLE pedidos (
+	id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    qtd_itens INT(10),
+    total FLOAT,
+    cliente_id INT NOT NULL,
+    FOREIGN KEY (cliente_id) REFERENCES clientes(id));
+    
+INSERT INTO clientes (nome, data_nascimento) VALUES ("Daniel", "1997-01-02");
+INSERT INTO clientes (nome, data_nascimento) VALUES ("Matheus", "1982-06-12");
+
+INSERT INTO pedidos (qtd_itens, total, cliente_id) VALUES ( 5, 356.78, 1);
+INSERT INTO pedidos (qtd_itens, total, cliente_id) VALUES ( 3, 215.49, 1);
+INSERT INTO pedidos (qtd_itens, total, cliente_id) VALUES ( 12, 156.51, 1);
+
+SELECT clientes.*, pedidos.*
+FROM clientes
+JOIN pedidos
+ON pedidos.cliente_id = clientes.id
+WHERE clientes.id;
+
+
+------------------------------------------------
+ --- EXEMPLO DE COMANDO COM MULTIPLOS JOINS ---
+
+/* Seleciona de 5 tabelas o nome e descricao de um filme, o nome completo do ator que fez o filme
+e só os filmes de categoria de ação, ordenando por titulo de filme e depois nome de ator */
+
+SELECT filme.filme_id, filme.titulo, filme.descricao, 
+CONCAT(ator.primeiro_nome," ", ator.ultimo_nome) AS ator_nome_completo,
+categoria.nome AS "categoria"
+FROM filme
+JOIN filme_ator
+ON filme.filme_id = filme_ator.filme_id
+JOIN ator
+ON filme_ator.ator_id = ator.ator_id
+JOIN filme_categoria
+ON filme.filme_id = filme_categoria.filme_id
+JOIN categoria
+ON filme_categoria.categoria_id = categoria.categoria_id
+WHERE categoria.nome LIKE "%action%"
+ORDER BY filme.titulo, ator.primeiro_nome;
+
+/*Seleciona o ultimo filme alugado, com o nome dele e id do filme e do aluguel */
+
+SELECT filme.filme_id, filme.titulo, 
+aluguel.data_de_aluguel AS ultima_data_alugada, aluguel.aluguel_id
+FROM filme
+JOIN inventario
+ON filme.filme_id = inventario.filme_id
+JOIN aluguel
+ON inventario.inventario_id = aluguel.inventario_id
+WHERE aluguel.data_de_aluguel = (
+	SELECT MAX(data_de_aluguel) 
+    FROM aluguel);
